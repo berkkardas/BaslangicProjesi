@@ -37,7 +37,7 @@ public class Istemci {
         try {
             soket.close();
             gidenMesaj.close();
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             logger.error("Soket kapatilirken hata olustu", e);
         }
     }
@@ -51,7 +51,7 @@ public class Istemci {
         try {
             gidenMesaj.writeUTF(mesajJson); // Sunucuya mesajin gonderilmesi
             logger.info("Mesaj gonderildi");
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             logger.error("Mesaj teslim edilirken hata olustu", e);
         }
     }
