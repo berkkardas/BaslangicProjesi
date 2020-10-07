@@ -28,7 +28,6 @@ public final class MesajUtil {
             System.out.println("Mesajin Icerigi: " + mesaj.getIcerik());
         } catch (JsonProcessingException e) {
             logger.error("Mesaj goruntulenirken hata olustu", e);
-            e.printStackTrace();
         }
     }
 
