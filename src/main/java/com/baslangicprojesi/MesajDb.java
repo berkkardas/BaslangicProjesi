@@ -24,7 +24,7 @@ public class MesajDb {
             String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
             Class.forName(JDBC_DRIVER);
             // Veritabanina baglanilmasi
-            System.out.println("Secilen veritabanina baglaniliyor...");
+            logger.info("Secilen veritabanina baglaniliyor");
             String DB_URL = "jdbc:mysql://localhost:3306/mesajDb";
             // Veritabani kullanici adi sifresi
             String USER = "root";
