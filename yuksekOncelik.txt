@@ -1,1 +1,0 @@
-{"oncelik":"YUKSEK","icerik":"12","to":"2","cc":"2","konu":"2"}

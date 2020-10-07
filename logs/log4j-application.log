@@ -1,4 +1,0 @@
-2020-10-07 10:32:18 INFO  Istemci:28 - com.baslangicprojesi.Sunucu ile baglanti kuruldu: Socket[addr=localhost/127.0.0.1,port=6789,localport=59779]
-2020-10-07 10:32:18 INFO  Istemci:55 - com.baslangicprojesi.Mesaj gonderildi
-2020-10-07 10:32:40 INFO  Istemci:28 - com.baslangicprojesi.Sunucu ile baglanti kuruldu: Socket[addr=localhost/127.0.0.1,port=6789,localport=59784]
-2020-10-07 10:32:40 INFO  Istemci:55 - com.baslangicprojesi.Mesaj gonderildi
