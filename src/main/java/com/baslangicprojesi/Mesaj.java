@@ -1,3 +1,5 @@
+package com.baslangicprojesi;
+
 /**
  * Konu, icerik vb. niteliklere sahip mesaj nesnesini temsil eder
  *

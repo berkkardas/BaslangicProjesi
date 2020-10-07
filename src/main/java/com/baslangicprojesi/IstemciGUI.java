@@ -1,3 +1,5 @@
+package com.baslangicprojesi;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
@@ -15,8 +17,6 @@ public class IstemciGUI {
 
     final static Logger logger = Logger.getLogger(IstemciGUI.class);
     private static Istemci istemci;
-    private static String adres;
-    private static int port;
     private final ObjectMapper mapper;
     private JFrame frame;
     private JTextField konu;
@@ -40,9 +40,9 @@ public class IstemciGUI {
             logger.info("Ornek Deger: localhost 6789");
             return;
         }
-        adres = args[0];
-        port = Integer.parseInt(args[1]);
-
+        String adres = args[0];
+        int port = Integer.parseInt(args[1]);
+        istemci = new Istemci(adres, port);
         EventQueue.invokeLater(() -> {
             try {
                 IstemciGUI window = new IstemciGUI();
@@ -57,7 +57,7 @@ public class IstemciGUI {
     /**
      * Grafik arayuzdeki icerikleri tanimlar ve ekler
      */
-    private void initialize() {
+    public void initialize() {
         frame = new JFrame();
         frame.setBounds(100, 100, 450, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -124,14 +124,19 @@ public class IstemciGUI {
                         Oncelik.valueOf(oncelik.getSelectedItem().toString().toUpperCase())); // Mesajin olusturulmasi
                 try {
                     String mesajJson = mapper.writeValueAsString(mesaj);
-                    istemci = new Istemci(adres, port);
                     istemci.teslimEt(mesajJson);
-                    istemci.kapat();
                 } catch (JsonProcessingException e) {
                     logger.error("Mesaj gonderilirken hata olustu", e);
-                    e.printStackTrace();
                 }
                 JOptionPane.showMessageDialog(null, "Mesaj gonderildi");
+            }
+        });
+
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                istemci.kapat();
+                System.exit(0);
             }
         });
 

@@ -1,3 +1,5 @@
+package com.baslangicprojesi;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
@@ -83,6 +85,8 @@ public class Sunucu extends Thread {
         sunucu.kapat();
         pes.shutdown();
         ces.shutdown();
+        pes.shutdownNow();
+        ces.shutdownNow();
     }
 
     /**
@@ -90,16 +94,25 @@ public class Sunucu extends Thread {
      * kaydeder ve soketi kapatir. Sonrasinda yeni bir baglantinin gelmesini bekler ve tekrar eder.
      */
     public void calistir() {
+        try {
+            soket = sunucuSoketi.accept(); // Baglanti gelene kadar bekleyecek
+            logger.info("Istemci ile baglanti saglandi: " + soket);
+        } catch (IOException e) {
+            logger.error("Istemciye baglanilirken hata olustu", e);
+        }
         while (true) {
-            System.out.println("Sunucu hazir, istemci bekleniyor...");
             try {
-                soket = sunucuSoketi.accept(); // Baglanti gelene kadar bekleyecek
-                logger.info("Istemci ile baglanti saglandi: " + soket);
                 gelenMesaj = new DataInputStream(soket.getInputStream());
             } catch (IOException e) {
-                logger.error("Istemciye baglanirken hata olustu", e);
+                logger.error("Istemciden mesaj alinirken hata olustu", e);
             }
-            String mesajJson = teslimAl();
+            String mesajJson;
+            try {
+                mesajJson = teslimAl();
+            } catch (NullPointerException e) {
+                logger.error("Istemciden mesaj alinirken hata olustu", e);
+                break;
+            }
             // Mesajlar onceliklerine gore bir listeye eklenir
             try {
                 Mesaj mesaj = mapper.readValue(mesajJson, Mesaj.class);
@@ -114,7 +127,7 @@ public class Sunucu extends Thread {
                         yuksekKuyruk.put(mesajJson);
                         break;
                 }
-            } catch (JsonProcessingException | InterruptedException e) {
+            } catch (JsonProcessingException | InterruptedException | IllegalArgumentException e) {
                 logger.error("Mesaj listeye eklenirken hata olustu", e);
             }
         }
@@ -128,6 +141,13 @@ public class Sunucu extends Thread {
             soket.close();
             gelenMesaj.close();
         } catch (IOException e) {
+            logger.error("Soket kapatilirken hata olustu", e);
+        }
+        try {
+            dusukKuyruk.put("exit");
+            normalKuyruk.put("exit");
+            yuksekKuyruk.put("exit");
+        } catch (InterruptedException e) {
             logger.error("Soket kapatilirken hata olustu", e);
         }
     }

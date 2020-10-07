@@ -1,3 +1,5 @@
+package com.baslangicprojesi;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
@@ -42,6 +44,9 @@ public class SunucuThread extends Thread {
             mesajJson = null;
             try {
                 mesajJson = kuyruk.take();
+                if (mesajJson.equals("exit")) {
+                    break;
+                }
             } catch (InterruptedException e) {
                 logger.error("Mesaj listeden alinirken hata olustu", e);
             }
