@@ -1,4 +1,10 @@
 target/
+logs/
+.idea/
+dusukOncelik.txt
+normalOncelik.txt
+yuksekOncelik.txt
+proje1.iml
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
