@@ -86,6 +86,7 @@ public class SunucuThread extends Thread {
                     + "Oncelik.txt");
             fw.write(mesajJson);
             fw.close();
+            logger.info("Mesaj dosyaya kaydedildi");
         } catch (IOException e) {
             logger.error("Mesaj dosyaya yazilirken hata olustu", e);
         }

@@ -56,7 +56,7 @@ public class MesajDb {
             stmt.setString(4, konu);
             stmt.executeUpdate();
             logger.info("Mesaj veritabanina kaydedildi");
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.error("Mesaj veritabanina kaydedilirken hata olustu", e);
         }
     }
