@@ -5,8 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SunucuThreadTest {
     Mesaj mesaj;
@@ -20,11 +28,18 @@ class SunucuThreadTest {
     }
 
     @Test
-    void kaydet() throws InterruptedException {
+    void kaydet() throws InterruptedException, IOException {
         BlockingQueue<String> dusukKuyruk = new LinkedBlockingQueue<>();
         dusukKuyruk.put(mesajJson);
         dusukKuyruk.put("exit");
         SunucuThread sunucuThread = new SunucuThread(dusukKuyruk, "");
         sunucuThread.run();
+        Path path = Paths.get("dusukOncelik.txt");
+        Stream<String> stream = Files.lines(path);
+        StringBuilder sb = new StringBuilder();
+        stream.forEach(sb::append);
+        String contents = sb.toString();
+        assertEquals(mesajJson, contents);
+
     }
 }
